@@ -30,3 +30,22 @@ dmg:
       y: 220
       type: link
       path: /Applications
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  artifactName: ${productName}-${version}-setup.${ext}
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  deleteAppDataOnUninstall: false
+linux:
+  category: Graphics
+  synopsis: Bulk-upload photos and videos to Immich
+  target:
+    - target: AppImage
+      arch:
+        - x64
+  artifactName: ${productName}-${version}-${arch}.${ext}

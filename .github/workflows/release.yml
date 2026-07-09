@@ -2,8 +2,8 @@ name: Release
 
 # Two ways to cut a release:
 #   1. Run this workflow manually (Actions → Release → Run workflow) and pick a
-#      version bump. It bumps package.json, commits, tags, builds the app and
-#      publishes the GitHub Release — all in one go.
+#      version bump. It bumps package.json, commits, tags, builds for macOS,
+#      Windows and Linux, and publishes one GitHub Release with every installer.
 #   2. Push a tag yourself (e.g. `git tag v1.2.3 && git push --follow-tags`).
 on:
   workflow_dispatch:
@@ -28,13 +28,47 @@ permissions:
   contents: write # create tags, commits and releases
 
 jobs:
-  release:
-    name: Build & publish macOS app
-    runs-on: macos-14 # Apple Silicon runner (matches the arm64 target)
+  # 1) Resolve the version/tag once (bump on manual runs) so every build job
+  #    checks out the exact same commit.
+  setup:
+    name: Resolve version & tag
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.out.outputs.tag }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Bump version & tag (manual runs)
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          npm version "${{ inputs.bump }}" -m "chore(release): v%s"
+          git push origin "HEAD:${{ github.ref_name }}" --follow-tags
+
+      - name: Resolve tag
+        id: out
+        run: echo "tag=v$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+
+  # 2) Build each platform on its native runner.
+  build:
+    name: Build (${{ matrix.os }})
+    needs: setup
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-14, windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.setup.outputs.tag }}
 
       - uses: actions/setup-node@v4
         with:
@@ -44,41 +78,48 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Bump version & tag (manual runs)
-        if: github.event_name == 'workflow_dispatch'
-        run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          npm version "${{ inputs.bump }}" -m "chore(release): v%s"
-          # Pushing with GITHUB_TOKEN does not re-trigger the tag workflow,
-          # so we keep building in this same run.
-          git push origin "HEAD:${{ github.ref_name }}" --follow-tags
-
-      - name: Resolve version
-        id: v
-        run: |
-          VERSION="$(node -p "require('./package.json').version")"
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "tag=v$VERSION"     >> "$GITHUB_OUTPUT"
-
-      - name: Build & package (.dmg)
+      - name: Build installer for this OS
         env:
-          # Unsigned build — don't let electron-builder hunt for a certificate.
-          CSC_IDENTITY_AUTO_DISCOVERY: false
-        run: npm run package
+          CSC_IDENTITY_AUTO_DISCOVERY: false # unsigned build; don't hunt for a cert
+        run: npm run release:build
 
       - name: List artifacts
+        shell: bash
         run: ls -lh release
 
-      - name: Publish GitHub Release
+      - name: Upload installers
+        uses: actions/upload-artifact@v4
+        with:
+          name: installers-${{ matrix.os }}
+          if-no-files-found: error
+          retention-days: 1
+          path: |
+            release/*.dmg
+            release/*.exe
+            release/*.AppImage
+
+  # 3) Collect every installer and publish a single Release on the tag.
+  release:
+    name: Publish GitHub Release
+    needs: [setup, build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all installers
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - run: ls -lhR dist
+
+      - name: Publish
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.v.outputs.tag }}
-          name: ${{ steps.v.outputs.tag }}
+          tag_name: ${{ needs.setup.outputs.tag }}
+          name: ${{ needs.setup.outputs.tag }}
           generate_release_notes: true
           prerelease: ${{ github.event_name == 'workflow_dispatch' && inputs.prerelease || false }}
           fail_on_unmatched_files: true
-          files: |
-            release/*.dmg
+          files: dist/**
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

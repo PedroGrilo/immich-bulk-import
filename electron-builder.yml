@@ -1,0 +1,32 @@
+appId: com.pedrogrilo.immichgui
+productName: Immich GUI
+directories:
+  output: release
+  buildResources: build
+files:
+  - dist/**
+  - dist-electron/**
+  - package.json
+  - "!node_modules/**/{CHANGELOG.md,README.md,readme.md,test,tests,__tests__,*.map}"
+asar: true
+asarUnpack:
+  - "node_modules/@immich/cli/**"
+mac:
+  category: public.app-category.photography
+  target:
+    - target: dmg
+      arch:
+        - arm64
+  hardenedRuntime: false
+  gatekeeperAssess: false
+  identity: null
+  artifactName: ${productName}-${version}-${arch}.${ext}
+dmg:
+  title: ${productName}
+  contents:
+    - x: 130
+      y: 220
+    - x: 410
+      y: 220
+      type: link
+      path: /Applications

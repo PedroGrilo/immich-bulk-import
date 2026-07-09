@@ -1,6 +1,6 @@
 {
   "name": "immich-bulk-import",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Immich Bulk Import — a clean macOS app for bulk-uploading photos and videos to Immich",
   "main": "dist-electron/main.js",
   "type": "module",
@@ -34,7 +34,7 @@
     "tailwindcss": "^3.4.16",
     "typescript": "^5.7.2",
     "vite": "^6.0.3",
-    "vite-plugin-electron": "^0.29.0",  
+    "vite-plugin-electron": "^0.29.0",
     "vite-plugin-electron-renderer": "^0.14.6"
   }
 }

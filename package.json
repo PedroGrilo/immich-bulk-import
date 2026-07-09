@@ -1,6 +1,6 @@
 {
   "name": "immich-bulk-import",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Immich Bulk Import — a clean macOS app for bulk-uploading photos and videos to Immich",
   "main": "dist-electron/main.js",
   "type": "module",

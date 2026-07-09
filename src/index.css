@@ -2,18 +2,115 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+   Immich Bulk Import — Liquid Glass design system
+   Theme-aware (follows macOS light / dark), driven by CSS vars.
+   ============================================================ */
+
+:root {
+  /* Text (space-separated RGB channels for Tailwind <alpha-value>) */
+  --text: 21 26 44;
+  --text-muted: 82 94 120;
+  --text-subtle: 130 140 160;
+
+  /* Brand + status */
+  --accent: 79 108 255; /* blue from the logo */
+  --accent-hover: 99 124 255;
+  --accent-muted: 148 165 240;
+  --accent-2: 22 179 106; /* green from the logo */
+  --ok: 22 179 106;
+  --warn: 217 119 6;
+  --err: 225 72 72;
+
+  /* Solid surfaces (fallbacks) */
+  --bg: 236 240 250;
+  --bg-surface: 255 255 255;
+  --bg-elev: 248 250 254;
+  --bg-border: 210 218 235;
+
+  /* Backdrop */
+  --backdrop: radial-gradient(1200px 800px at 12% -10%, #dfe6ff 0%, transparent 55%),
+    radial-gradient(1000px 700px at 108% 8%, #d6fbe8 0%, transparent 50%),
+    radial-gradient(900px 900px at 60% 120%, #e7ddff 0%, transparent 55%),
+    linear-gradient(160deg, #eef2fb 0%, #e6ebf7 100%);
+
+  /* Glass panels */
+  --glass-bg: linear-gradient(155deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.55) 100%);
+  --glass-border: rgba(255, 255, 255, 0.8);
+  --glass-hi: rgba(255, 255, 255, 0.95);
+  --glass-shadow: 0 22px 48px -20px rgba(30, 41, 79, 0.32), 0 4px 14px -6px rgba(30, 41, 79, 0.14);
+
+  --glass-strong-bg: linear-gradient(155deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.72) 100%);
+
+  /* Inset controls (inputs, log pane) */
+  --inset-bg: rgba(255, 255, 255, 0.55);
+  --inset-border: rgba(20, 30, 60, 0.1);
+
+  /* Hover wash */
+  --wash: rgba(20, 30, 60, 0.05);
+  --wash-strong: rgba(20, 30, 60, 0.09);
+
+  --scrollbar: rgba(20, 30, 60, 0.18);
+  --scrollbar-hover: rgba(20, 30, 60, 0.3);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: 233 236 245;
+    --text-muted: 158 166 186;
+    --text-subtle: 110 118 140;
+
+    --accent: 105 130 255;
+    --accent-hover: 130 152 255;
+    --accent-muted: 74 84 140;
+    --accent-2: 45 199 122;
+    --ok: 45 199 122;
+    --warn: 245 176 65;
+    --err: 245 108 108;
+
+    --bg: 8 10 16;
+    --bg-surface: 22 26 36;
+    --bg-elev: 30 35 48;
+    --bg-border: 46 53 72;
+
+    --backdrop: radial-gradient(1100px 760px at 10% -12%, #1b2350 0%, transparent 55%),
+      radial-gradient(1000px 700px at 110% 6%, #0c3a2e 0%, transparent 52%),
+      radial-gradient(900px 900px at 62% 122%, #241a49 0%, transparent 55%),
+      linear-gradient(160deg, #0a0c14 0%, #070810 100%);
+
+    --glass-bg: linear-gradient(155deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.035) 100%);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-hi: rgba(255, 255, 255, 0.16);
+    --glass-shadow: 0 24px 60px -22px rgba(0, 0, 0, 0.7), 0 6px 18px -10px rgba(0, 0, 0, 0.5);
+
+    --glass-strong-bg: linear-gradient(155deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.06) 100%);
+
+    --inset-bg: rgba(255, 255, 255, 0.04);
+    --inset-border: rgba(255, 255, 255, 0.09);
+
+    --wash: rgba(255, 255, 255, 0.06);
+    --wash-strong: rgba(255, 255, 255, 0.1);
+
+    --scrollbar: rgba(255, 255, 255, 0.14);
+    --scrollbar-hover: rgba(255, 255, 255, 0.26);
+  }
+}
+
 html,
 body,
 #root {
   height: 100%;
   margin: 0;
-  background: transparent;
 }
 
 body {
+  color: rgb(var(--text));
+  background: var(--backdrop);
+  background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   user-select: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', Inter, system-ui, sans-serif;
 }
 
 input,
@@ -22,7 +119,7 @@ textarea,
   user-select: text;
 }
 
-/* Drag the window from the title bar zone */
+/* Drag the window from the title-bar zone */
 .drag {
   -webkit-app-region: drag;
 }
@@ -30,7 +127,7 @@ textarea,
   -webkit-app-region: no-drag;
 }
 
-/* Scrollbar */
+/* Scrollbars */
 *::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -39,17 +136,136 @@ textarea,
   background: transparent;
 }
 *::-webkit-scrollbar-thumb {
-  background: #2a2f3d;
+  background: var(--scrollbar);
   border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
 }
 *::-webkit-scrollbar-thumb:hover {
-  background: #3a3f55;
+  background: var(--scrollbar-hover);
+  background-clip: padding-box;
 }
 
-/* Focus ring */
 *:focus {
   outline: none;
 }
 .focus-ring:focus-visible {
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5);
+  box-shadow: 0 0 0 2px rgb(var(--accent) / 0.55);
+}
+
+@layer components {
+  /* Frosted glass panel */
+  .glass {
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+    backdrop-filter: blur(30px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-hi);
+  }
+  .glass-strong {
+    background: var(--glass-strong-bg);
+    -webkit-backdrop-filter: blur(36px) saturate(190%);
+    backdrop-filter: blur(36px) saturate(190%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-hi);
+  }
+  /* Recessed control surface */
+  .glass-inset {
+    background: var(--inset-bg);
+    border: 1px solid var(--inset-border);
+  }
+
+  .hover-wash {
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .hover-wash:hover {
+    background-color: var(--wash);
+  }
+
+  /* Buttons */
+  .btn-primary {
+    background-image: linear-gradient(180deg, rgb(var(--accent-hover)) 0%, rgb(var(--accent)) 100%);
+    color: #fff;
+    box-shadow: 0 8px 20px -8px rgb(var(--accent) / 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+    transition: filter 0.15s ease, transform 0.05s ease, opacity 0.15s ease;
+  }
+  .btn-primary:hover:not(:disabled) {
+    filter: brightness(1.06);
+  }
+  .btn-primary:active:not(:disabled) {
+    transform: translateY(0.5px);
+  }
+  .btn-primary:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  .btn-danger {
+    background-image: linear-gradient(180deg, rgb(var(--err)) 0%, rgb(var(--err) / 0.85) 100%);
+    color: #fff;
+    box-shadow: 0 8px 20px -8px rgb(var(--err) / 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    transition: filter 0.15s ease;
+  }
+  .btn-danger:hover {
+    filter: brightness(1.06);
+  }
+
+  .btn-glass {
+    background: var(--inset-bg);
+    border: 1px solid var(--glass-border);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+  .btn-glass:hover {
+    background: var(--wash-strong);
+  }
+
+  /* Inline code chip */
+  .code {
+    font-family: 'SF Mono', 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.85em;
+    padding: 0.05em 0.4em;
+    border-radius: 6px;
+    background: var(--wash-strong);
+    border: 1px solid var(--inset-border);
+    white-space: nowrap;
+  }
+}
+
+/* Motion */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out both;
+}
+.animate-slide-up {
+  animation: slideUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }

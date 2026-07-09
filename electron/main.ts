@@ -33,13 +33,14 @@ let mainWindow: BrowserWindow | null = null;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
+    title: 'Immich Bulk Import',
     width: 1200,
     height: 820,
     minWidth: 980,
     minHeight: 640,
-    backgroundColor: '#0b0d12',
+    backgroundColor: '#0a0c14',
     titleBarStyle: 'hiddenInset',
-    trafficLightPosition: { x: 16, y: 16 },
+    trafficLightPosition: { x: 16, y: 18 },
     vibrancy: 'under-window',
     visualEffectState: 'active',
     show: false,
@@ -108,7 +109,7 @@ function registerIpc() {
   ipcMain.handle('dialog:choose-dirs', async (): Promise<DialogResult<string[]>> => {
     if (!mainWindow) return { ok: false, error: 'No window' };
     const res = await dialog.showOpenDialog(mainWindow, {
-      title: 'Escolher pastas para upload',
+      title: 'Choose folders to upload',
       properties: ['openDirectory', 'multiSelections', 'createDirectory'],
     });
     if (res.canceled) return { ok: false };
@@ -118,11 +119,11 @@ function registerIpc() {
   ipcMain.handle('dialog:choose-files', async (): Promise<DialogResult<string[]>> => {
     if (!mainWindow) return { ok: false, error: 'No window' };
     const res = await dialog.showOpenDialog(mainWindow, {
-      title: 'Escolher fotos / vídeos para upload',
+      title: 'Choose photos / videos to upload',
       properties: ['openFile', 'multiSelections'],
       filters: [
         {
-          name: 'Imagens e vídeos',
+          name: 'Images and videos',
           extensions: [
             'jpg', 'jpeg', 'png', 'heic', 'heif', 'gif', 'tif', 'tiff',
             'webp', 'avif', 'bmp', 'raw', 'arw', 'cr2', 'cr3', 'nef',
@@ -130,7 +131,7 @@ function registerIpc() {
             '3gp', 'webm', 'mpg', 'mpeg', 'wmv',
           ],
         },
-        { name: 'Todos os ficheiros', extensions: ['*'] },
+        { name: 'All files', extensions: ['*'] },
       ],
     });
     if (res.canceled) return { ok: false };

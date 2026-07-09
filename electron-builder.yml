@@ -1,5 +1,5 @@
-appId: com.pedrogrilo.immichgui
-productName: Immich GUI
+appId: com.pedrogrilo.immichbulkimport
+productName: Immich Bulk Import
 directories:
   output: release
   buildResources: build

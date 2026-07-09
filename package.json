@@ -1,13 +1,15 @@
 {
-  "name": "immich-gui",
+  "name": "immich-bulk-import",
   "version": "0.1.0",
-  "description": "A beautiful macOS GUI for the Immich CLI",
+  "description": "Immich Bulk Import — a clean macOS app for bulk-uploading photos and videos to Immich",
   "main": "dist-electron/main.js",
   "type": "module",
   "author": "Pedro Grilo",
   "license": "MIT",
   "scripts": {
     "dev": "vite",
+    "dev:web": "NO_ELECTRON=1 vite",
+    "icon": "electron scripts/make-icon.mjs",
     "build": "tsc -p tsconfig.node.json && vite build",
     "preview": "vite preview",
     "package": "npm run build && electron-builder --mac --config electron-builder.yml",

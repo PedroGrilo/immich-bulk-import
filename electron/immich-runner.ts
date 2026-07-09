@@ -95,8 +95,8 @@ function resolveImmichEntry(): string {
   }
 
   throw new Error(
-    'Não consegui encontrar o @immich/cli dentro do bundle da app. ' +
-      'Reinstala as dependências com `npm install`.'
+    "Couldn't find @immich/cli inside the app bundle. " +
+      'Reinstall dependencies with `npm install`.'
   );
 }
 

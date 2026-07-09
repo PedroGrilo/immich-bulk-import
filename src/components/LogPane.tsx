@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ChevronDown, Trash2, Copy, Check } from 'lucide-react';
+import { ChevronDown, Copy, Check } from 'lucide-react';
 
 export interface LogLine {
   level: 'info' | 'warn' | 'error' | 'success' | 'cli';
@@ -41,11 +41,9 @@ export function LogPane({ logs }: { logs: LogLine[] }) {
   };
 
   return (
-    <section className="bg-bg-surface border border-bg-border rounded-2xl overflow-hidden">
-      <header className="flex items-center justify-between px-4 py-2.5 border-b border-bg-border">
-        <h2 className="text-xs font-semibold uppercase tracking-wider text-text-muted">
-          Logs
-        </h2>
+    <section className="glass rounded-2xl overflow-hidden">
+      <header className="flex items-center justify-between px-4 py-2.5 border-b border-[var(--inset-border)]">
+        <h2 className="text-xs font-semibold uppercase tracking-wider text-text-muted">Logs</h2>
         <div className="flex items-center gap-1">
           {!autoScroll && (
             <button
@@ -53,18 +51,18 @@ export function LogPane({ logs }: { logs: LogLine[] }) {
                 setAutoScroll(true);
                 if (ref.current) ref.current.scrollTop = ref.current.scrollHeight;
               }}
-              className="text-xs text-text-muted hover:text-text flex items-center gap-1 px-2 py-1 rounded hover:bg-bg-elev"
-              title="Voltar ao fim"
+              className="text-xs text-text-muted hover:text-text flex items-center gap-1 px-2 py-1 rounded-lg hover-wash"
+              title="Jump to bottom"
             >
               <ChevronDown size={12} />
-              Seguir
+              Follow
             </button>
           )}
           <button
             onClick={copy}
             disabled={logs.length === 0}
-            className="text-xs text-text-muted hover:text-text flex items-center gap-1 px-2 py-1 rounded hover:bg-bg-elev disabled:opacity-30"
-            title="Copiar"
+            className="text-xs text-text-muted hover:text-text flex items-center gap-1 px-2 py-1 rounded-lg hover-wash disabled:opacity-30"
+            title="Copy"
           >
             {copied ? <Check size={12} className="text-ok" /> : <Copy size={12} />}
           </button>
@@ -73,10 +71,10 @@ export function LogPane({ logs }: { logs: LogLine[] }) {
       <div
         ref={ref}
         onScroll={onScroll}
-        className="bg-bg-elev font-mono text-[11px] leading-relaxed p-4 overflow-auto max-h-80 selectable"
+        className="glass-inset border-x-0 border-b-0 font-mono text-[11px] leading-relaxed p-4 overflow-auto max-h-80 selectable"
       >
         {logs.length === 0 ? (
-          <div className="text-text-subtle italic">Sem output ainda…</div>
+          <div className="text-text-subtle italic">No output yet…</div>
         ) : (
           logs.map((l, i) => (
             <div key={i} className={`whitespace-pre-wrap break-all ${colorByLevel[l.level]}`}>

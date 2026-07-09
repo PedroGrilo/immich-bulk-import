@@ -26,7 +26,7 @@ export function TextField({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="focus-ring w-full bg-bg-elev border border-bg-border rounded-lg px-3 py-2 text-sm placeholder:text-text-subtle font-mono"
+        className="focus-ring w-full glass-inset rounded-xl px-3 py-2 text-sm placeholder:text-text-subtle font-mono"
       />
     </label>
   );

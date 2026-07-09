@@ -1,49 +1,44 @@
 /** @type {import('tailwindcss').Config} */
+const withAlpha = (v) => `rgb(var(${v}) / <alpha-value>)`;
+
 export default {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
-  darkMode: 'class',
   theme: {
     extend: {
       colors: {
         bg: {
-          DEFAULT: '#0b0d12',
-          surface: '#11141b',
-          elev: '#171b24',
-          border: '#232836',
+          DEFAULT: withAlpha('--bg'),
+          surface: withAlpha('--bg-surface'),
+          elev: withAlpha('--bg-elev'),
+          border: withAlpha('--bg-border'),
         },
         accent: {
-          DEFAULT: '#6366f1',
-          hover: '#7c7fff',
-          muted: '#3a3f7a',
+          DEFAULT: withAlpha('--accent'),
+          hover: withAlpha('--accent-hover'),
+          muted: withAlpha('--accent-muted'),
+          2: withAlpha('--accent-2'),
         },
-        ok: '#10b981',
-        warn: '#f59e0b',
-        err: '#ef4444',
+        ok: withAlpha('--ok'),
+        warn: withAlpha('--warn'),
+        err: withAlpha('--err'),
         text: {
-          DEFAULT: '#e5e7eb',
-          muted: '#9ca3af',
-          subtle: '#6b7280',
+          DEFAULT: withAlpha('--text'),
+          muted: withAlpha('--text-muted'),
+          subtle: withAlpha('--text-subtle'),
         },
       },
-      boxShadow: {
-        glow: '0 0 0 1px rgba(99,102,241,0.4), 0 4px 20px rgba(99,102,241,0.15)',
-        card: '0 1px 3px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.2)',
+      borderRadius: {
+        '2xl': '1.125rem',
+        '3xl': '1.5rem',
       },
       fontFamily: {
         sans: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Text', 'Inter', 'system-ui', 'sans-serif'],
         mono: ['SF Mono', 'JetBrains Mono', 'ui-monospace', 'monospace'],
       },
       animation: {
-        'fade-in': 'fadeIn 0.25s ease-out',
-        'slide-up': 'slideUp 0.3s ease-out',
+        'fade-in': 'fadeIn 0.3s ease-out both',
+        'slide-up': 'slideUp 0.35s cubic-bezier(0.22,1,0.36,1) both',
         'pulse-slow': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-      },
-      keyframes: {
-        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
-        slideUp: {
-          '0%': { opacity: '0', transform: 'translateY(8px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
-        },
       },
     },
   },

@@ -3,7 +3,15 @@ import react from '@vitejs/plugin-react';
 import electron from 'vite-plugin-electron/simple';
 import path from 'node:path';
 
+// Set NO_ELECTRON=1 to run a plain web dev server (used for the in-browser
+// design preview). The packaged app and `npm run dev` still bundle Electron.
+const withElectron = process.env.NO_ELECTRON !== '1';
+
 export default defineConfig({
+  server: {
+    port: Number(process.env.PORT) || 5173,
+    strictPort: false,
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
@@ -12,6 +20,7 @@ export default defineConfig({
   },
   plugins: [
     react(),
+    withElectron &&
     electron({
       main: {
         entry: 'electron/main.ts',

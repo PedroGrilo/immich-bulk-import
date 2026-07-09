@@ -26,9 +26,9 @@ export function Toggle({ label, description, checked, onChange, danger, disabled
           'relative flex-shrink-0 mt-0.5 inline-flex h-5 w-9 items-center rounded-full transition-colors',
           checked
             ? danger
-              ? 'bg-err'
-              : 'bg-accent'
-            : 'bg-bg-elev border border-bg-border',
+              ? 'bg-err shadow-[0_2px_8px_-2px_rgb(var(--err)/0.6)]'
+              : 'bg-accent shadow-[0_2px_8px_-2px_rgb(var(--accent)/0.6)]'
+            : 'glass-inset',
         ].join(' ')}
       >
         <span

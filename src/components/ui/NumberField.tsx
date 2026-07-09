@@ -26,11 +26,11 @@ export function NumberField({
       {description && (
         <span className="block text-xs text-text-muted mb-1.5">{description}</span>
       )}
-      <div className="inline-flex items-stretch bg-bg-elev border border-bg-border rounded-lg overflow-hidden">
+      <div className="inline-flex items-stretch glass-inset rounded-xl overflow-hidden">
         <button
           type="button"
           onClick={() => onChange(clamp(value - step))}
-          className="px-2.5 hover:bg-bg-border text-text-muted"
+          className="px-2.5 hover-wash text-text-muted"
         >
           <Minus size={14} />
         </button>
@@ -46,7 +46,7 @@ export function NumberField({
         <button
           type="button"
           onClick={() => onChange(clamp(value + step))}
-          className="px-2.5 hover:bg-bg-border text-text-muted"
+          className="px-2.5 hover-wash text-text-muted"
         >
           <Plus size={14} />
         </button>

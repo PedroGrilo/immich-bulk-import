@@ -1,6 +1,7 @@
-import { Upload, Server, Info, LogOut } from 'lucide-react';
+import { Upload, Server, Info, LogOut, GraduationCap } from 'lucide-react';
+import { AppMark, Wordmark } from './Logo';
 
-export type View = 'upload' | 'server' | 'about';
+export type View = 'upload' | 'server' | 'tutorial' | 'about';
 
 interface Props {
   current: View;
@@ -11,8 +12,9 @@ interface Props {
 
 const items: { id: View; label: string; icon: typeof Upload }[] = [
   { id: 'upload', label: 'Upload', icon: Upload },
-  { id: 'server', label: 'Servidor', icon: Server },
-  { id: 'about', label: 'Sobre', icon: Info },
+  { id: 'server', label: 'Server', icon: Server },
+  { id: 'tutorial', label: 'Tutorial', icon: GraduationCap },
+  { id: 'about', label: 'About', icon: Info },
 ];
 
 export function Sidebar({ current, onChange, onLogout, url }: Props) {
@@ -25,19 +27,19 @@ export function Sidebar({ current, onChange, onLogout, url }: Props) {
   })();
 
   return (
-    <aside className="w-60 bg-bg-surface border-r border-bg-border flex flex-col flex-shrink-0">
+    <aside className="w-64 glass border-y-0 border-l-0 flex flex-col flex-shrink-0 rounded-none">
       <div className="drag h-10 flex-shrink-0" />
-      <div className="px-5 pb-4 pt-2">
-        <div className="flex items-center gap-2.5">
-          <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm">
-            i
-          </div>
-          <div>
-            <div className="font-semibold text-sm leading-none">Immich GUI</div>
-            <div className="text-[11px] text-text-muted mt-1 truncate max-w-[140px]" title={url}>
-              {host}
-            </div>
-          </div>
+
+      <div className="px-5 pb-5 pt-1">
+        <div className="flex items-center gap-3">
+          <AppMark size={36} />
+          <Wordmark className="text-[15px] leading-tight" />
+        </div>
+        <div
+          className="text-[11px] text-text-subtle mt-2 pl-[3px] truncate"
+          title={url}
+        >
+          {host}
         </div>
       </div>
 
@@ -49,13 +51,13 @@ export function Sidebar({ current, onChange, onLogout, url }: Props) {
               key={id}
               onClick={() => onChange(id)}
               className={[
-                'no-drag flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors text-left',
+                'no-drag flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-left transition-colors',
                 active
-                  ? 'bg-accent/15 text-text border border-accent/30'
-                  : 'text-text-muted hover:text-text hover:bg-bg-elev border border-transparent',
+                  ? 'glass-inset text-text font-medium shadow-sm'
+                  : 'text-text-muted hover:text-text hover-wash border border-transparent',
               ].join(' ')}
             >
-              <Icon size={16} />
+              <Icon size={17} className={active ? 'text-accent' : ''} />
               <span>{label}</span>
             </button>
           );
@@ -65,10 +67,10 @@ export function Sidebar({ current, onChange, onLogout, url }: Props) {
       <div className="p-3">
         <button
           onClick={onLogout}
-          className="no-drag w-full flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-muted hover:text-err hover:bg-err/10 transition-colors"
+          className="no-drag w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-text-muted hover:text-err hover:bg-err/10 transition-colors"
         >
-          <LogOut size={16} />
-          <span>Terminar sessão</span>
+          <LogOut size={17} />
+          <span>Sign out</span>
         </button>
       </div>
     </aside>

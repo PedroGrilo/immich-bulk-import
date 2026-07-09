@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "name": "tailwindcss-core",
+  "owner": "fusengine",
+  "repo": "agents",
+  "path": "plugins/tailwindcss/skills/tailwindcss-core",
+  "branch": "main",
+  "sha": "3eddb1ee7dfd3c5beedfce23554a878abebd07c2",
+  "source": "manual"
+}

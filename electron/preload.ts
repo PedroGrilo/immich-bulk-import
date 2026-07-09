@@ -39,17 +39,23 @@ const api = {
   onJobLog: (cb: (e: { jobId: string; level: string; text: string; ts: number }) => void) => {
     const handler = (_: unknown, data: any) => cb(data);
     ipcRenderer.on('job:log', handler);
-    return () => ipcRenderer.removeListener('job:log', handler);
+    return () => {
+      ipcRenderer.removeListener('job:log', handler);
+    };
   },
   onJobProgress: (cb: (e: { jobId: string; current?: number; total?: number; percent?: number; eta?: string; message?: string }) => void) => {
     const handler = (_: unknown, data: any) => cb(data);
     ipcRenderer.on('job:progress', handler);
-    return () => ipcRenderer.removeListener('job:progress', handler);
+    return () => {
+      ipcRenderer.removeListener('job:progress', handler);
+    };
   },
   onJobStatus: (cb: (e: { jobId: string; status: string; exitCode?: number; error?: string }) => void) => {
     const handler = (_: unknown, data: any) => cb(data);
     ipcRenderer.on('job:status', handler);
-    return () => ipcRenderer.removeListener('job:status', handler);
+    return () => {
+      ipcRenderer.removeListener('job:status', handler);
+    };
   },
 };
 

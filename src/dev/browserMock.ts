@@ -83,15 +83,21 @@ export function installBrowserMock() {
     },
     onJobLog: (cb) => {
       listeners.log.push(cb);
-      return () => (listeners.log = listeners.log.filter((f) => f !== cb));
+      return () => {
+        listeners.log = listeners.log.filter((f) => f !== cb);
+      };
     },
     onJobProgress: (cb) => {
       listeners.progress.push(cb);
-      return () => (listeners.progress = listeners.progress.filter((f) => f !== cb));
+      return () => {
+        listeners.progress = listeners.progress.filter((f) => f !== cb);
+      };
     },
     onJobStatus: (cb) => {
       listeners.status.push(cb);
-      return () => (listeners.status = listeners.status.filter((f) => f !== cb));
+      return () => {
+        listeners.status = listeners.status.filter((f) => f !== cb);
+      };
     },
   };
 
